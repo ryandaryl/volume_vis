@@ -1,5 +1,8 @@
 result_handler = function(data) {
-    gps_year_to_points(data['result']['records'])
+    points = gps_year_to_points(data['result']['records'])
+    width = window.innerWidth
+    height = window.innerHeight
+    setInterval(animate_points, 50, points, width, height, 4)
 }                                    // Change this function to do whatever you want with the results of the query.
 
 
@@ -29,7 +32,7 @@ table_id = '9ec26edf-ea5b-4869-8c2c-38b41fb3a51d'
                                     // Change this to the id of the table you want to query. You can get it by clicking "Explore" for a .csv file at data.gov.au, then clicking the green "Data-API" button.
 
 
-sql_query = 'WHERE latitude >-17 AND latitude <-16.8 AND longitude >145.2 AND longitude <145.4'
+sql_query = 'WHERE latitude >-17 AND latitude <-16 AND longitude >145.2 AND longitude <145.4'
                                     // Put your SQL query here.
 
 
@@ -65,11 +68,9 @@ gps_year_to_points = function(items) {
         for (j = 0; j < columns.length; j++) {
             dist = items[i][columns[j]] - mins[columns[j]]
             total_range = maxs[columns[j]] - mins[columns[j]]
-            console.log(100 * dist / total_range)
             coord[point_vars[j]] = 100 * dist / total_range
         }
         points.push(coord)
     }
-    console.log(points)
     return points
 }
