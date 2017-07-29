@@ -12,8 +12,9 @@ svg.append("rect")
    .attr("height", height)
    .on("ontouchstart" in document ? "touchmove" : "mousemove", particle);
 
-function particle(xy) {
+function particle(xy, mr) {
  var m = xy ? xy : d3.mouse(this);
+ var max_radius =mr ? mr : 100
 
  svg.insert("circle", "rect")
      .attr("cx", m[0])
@@ -24,7 +25,7 @@ function particle(xy) {
    .transition()
      .duration(2000)
      .ease(Math.sqrt)
-     .attr("r", 100)
+     .attr("r", max_radius)
      .style("stroke-opacity", 1e-6)
      .remove();
 

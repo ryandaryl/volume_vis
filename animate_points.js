@@ -6,19 +6,19 @@ duration = 4     // Total duration of the animation in seconds.
 */
 
 
-xy = [0, 0]
+xy = [0, 100]
 t = 0
 
 
 animate_points = function(points, width, height, duration) {
-    max_time = duration * 60
-    xy[0] += 20
-    xy[1] += 20
+    max_time = duration * 10
     t += 1
-    // particle(xy)
-    if (xy[0] > window.innerWidth) xy[0] = 0
-    if (xy[1] > window.innerHeight) xy[1] = 0
-    if (t > max_time) t = 0
+    xy[0] += 20
+    particle(xy, 10)
+    if (t > max_time) {
+        t = 0
+        xy[0] = 0
+    }
     for (i = 0; i < points.length; i++) {
         if (parseInt(points[i]['t'])
           == parseInt(100 * t / max_time)) {
