@@ -1,0 +1,57 @@
+
+/* 
+    Created on : 23/02/2017, 3:38:15 PM
+    Author     : Trent Hobley ISD
+*/
+
+/* over use of !important due to the css for the map loaded in the javascript 
+after the initial page creation*/
+
+div.featdiv{
+    padding-left: 28px !important ;
+}
+div.featicondiv{
+    display: none !important;
+}
+table.feattabletab td.left{
+    width: 100px !important ;
+}
+div.olControlScaleLineBottom{
+    display: none ;
+}
+div.olControlScaleLineTop{
+    font-family:  'VIC' ;
+    font-weight: 600;
+    font-size: 11px;
+}
+table.feattabletab td.right  {
+    text-transform: none !important;
+}
+table.feattabletab td.right > a.nocaps {
+    text-transform: capitalize !important;
+}
+div.top {
+    background-color: #007b4b !important;
+    color: white !important; 
+}
+div.olControlZoom a:hover{
+    background: rgb(255,255,255);
+    color: #007b4b !important;
+}
+.ui-state-active,
+.ui-widget-content .ui-state-active,
+.ui-widget-header .ui-state-active,
+a.ui-button:active,
+.ui-button:active,
+.ui-button.ui-state-active:hover {
+    color: rgb(0, 123, 75) !important;
+}
+.ui-icon-background,
+.ui-state-active .ui-icon-background {
+    background-color: rgb(0, 123, 75) !important;
+}
+.ui-state-active a,
+.ui-state-active a:link,
+.ui-state-active a:visited {
+    color: rgb(0, 123, 75) !important;
+}

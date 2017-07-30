@@ -1,0 +1,15 @@
+rect {
+ fill: none;
+ z-index: 1;
+}
+
+circle {
+ fill: none;
+ stroke-width: 2.5px;
+ z-index: 1;
+}
+
+.node text {
+ pointer-events: none;
+ font: 10px sans-serif;
+}

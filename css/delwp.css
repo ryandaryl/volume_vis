@@ -1,0 +1,57 @@
+
+/* 
+    Created on : 22/11/2016, 3:11:55 PM
+    Author     : th61
+*/
+
+
+@font-face {
+    font-family: VIC;
+    src: url("../css/assets/fonts/VIC-Regular.woff2") format("woff2"), /* Super Modern Browsers */  
+        url("../css/assets/fonts/VIC-Regular.woff") format("woff"), /* Pretty Modern Browsers */
+        url("../css/assets/fonts/VIC-Regular.ttf") format("truetype"); /* Safari, Android, iOS */
+    font-style: normal;
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: VIC;
+    src: url("../css/assets/fonts/VIC-Medium.woff2") format("woff2"), /* Super Modern Browsers */
+        url("../css/assets/fonts/VIC-Medium.woff") format("woff"), /* Pretty Modern Browsers */
+        url("../css/assets/fonts/VIC-Medium.ttf") format("truetype"); /* Safari, Android, iOS */
+    font-style: normal;
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: VIC;
+    src: url("../css/assets/fonts/VIC-SemiBold.woff2") format("woff2"), /* Super Modern Browsers */  
+        url("../css/assets/fonts/VIC-SemiBold.woff") format("woff"), /* Pretty Modern Browsers */
+        url("../css/assets/fonts/VIC-SemiBold.ttf") format("truetype"); /* Safari, Android, iOS */
+    font-style: normal;
+    font-weight: 600;
+}
+
+@font-face {
+    font-family: VIC;
+    src: url("../css/assets/fonts/VIC-Bold.woff2") format("woff2"), /* Super Modern Browsers */  
+        url("../css/assets/fonts/VIC-Bold.woff") format("woff"), /* Pretty Modern Browsers */
+        url("../css/assets/fonts/VIC-Bold.ttf") format("truetype"); /* Safari, Android, iOS */
+    font-style: normal;
+    font-weight: bold;
+}
+
+body {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    //min-height: 100% !important;
+}
+
+div#map{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+

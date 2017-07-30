@@ -1,0 +1,173 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        <title>Vicmaps pollution visualisation</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <link href="./css/jquery-ui.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="./css/delwp.css" />
+
+        <script type="text/javascript" src="./openlayers/OpenLayers.js"></script>
+        <script src="./js/jquery.min.js"></script>
+        <script src="./js/jquery-ui.min.js"></script>
+
+        <script src="./js/click.js"></script>
+        <style>
+            div.featicondiv{
+                width: 20px !important;
+                height: 20px !important;
+                background-size: 20px 20px !important;
+                opacity: 0.7 !important;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="container" style="position: absolute; width:100%; height:100%; pointer-events: none;">
+          <div style="position: absolute; z-index: 0; pointer-events: auto;" id="map"></div>
+          <div style="position: absolute; z-index:2; pointer-events: auto; width:500px; top:0px;">
+            <button id="btn_gotoPollution">POLLUTION EXPLOSION!</button>
+          </div>
+        </div>
+        <script>
+            var theMap; // Used in the delwp theme to send functions to the map
+            /*
+             * Here is a basic map being created. with a couple of extra values. Right at the end I have assigned
+             * the above theMap global variable to the map that was created.
+             */
+            // $(function() {
+                var url = "http://api.maps.vic.gov.au/geowebcacheWM/service/wmts";
+                var att = "Vicmap API © " + new Date().getFullYear() + " State Government of Victoria | <a href='http://api.maps.vic.gov.au/vicmapapi/Copyright.jsp' target='_blank' style='color:#4BABFA;'>Copyright and Disclaimer</a> "
+                var p3857 = new OpenLayers.Projection("EPSG:3857");
+                var p4326 = new OpenLayers.Projection("EPSG:4326");
+                var tileExtent = new OpenLayers.Bounds(15359931, -6164655, 17252630, -3765811);
+                var maxEextent = new OpenLayers.Bounds(-20037508.34, -20037508.34, 20037508.34, 20037508.34);
+                var tilesize = new OpenLayers.Size(512, 512);
+                var resosWM = [
+                    156543.03392804097,
+                    78271.51696402048,
+                    39135.75848201024,
+                    19567.87924100510000,
+                    9783.93962050256000,
+                    4891.96981025128000,
+                    2445.98490512564000,
+                    1222.99245256282000,
+                    611.49622628141000,
+                    305.74811314070500,
+                    152.87405657035200,
+                    76.43702828517620,
+                    38.21851414258810,
+                    19.10925707129400,
+                    9.55462853564703,
+                    4.77731426782351,
+                    2.388657133911758,
+                    1.194328566955879,
+                    0.5971642834779395,
+                    0.2985821416974068,
+                    0.1492910708487034
+                ];
+                var vmapi = new OpenLayers.Layer.WMTS({
+                    name: "Vicmap API - Cartographic",
+                    //sphericalMercator: true,
+                    url: url,
+                    layer: "WEB_MERCATOR",
+                    div: "map",
+                    matrixSet: "EPSG:3857_WEB_MERCATOR",
+                    ServerResolutions: resosWM,
+                    matrixIds: matrixIds("EPSG:3857_WEB_MERCATOR", 21),
+                    format: "image/png",
+                    style: "_null",
+                    opacity: 1,
+                    isBaseLayer: true,
+                    tileFullExtent: tileExtent,
+                    maxExtent: maxEextent,
+                    attribution: att
+                });
+                vmapi.setTileSize(tilesize);
+                vmapi.projection = p3857;
+
+                // return a point in 'normal' lat long units from a point in map units
+                var mapUnitsToLatLong = function (point) {
+                    var cpoint = point.clone();
+                    return point.transform(p3857, p4326);
+                };
+
+                // return the top left and bottom right corners of the current map view
+                var getCurrentMapViewBox = function () {
+                    var ext = theMap.getExtent();
+                    var topleft = new OpenLayers.LonLat(ext.left, ext.top);
+                    var botrite = new OpenLayers.LonLat(ext.right, ext.bottom);
+                    topleft = mapUnitsToLatLong(topleft);
+                    botrite = mapUnitsToLatLong(botrite);
+                    return {"topleft": topleft, "botrite": botrite};
+                }
+
+                var onMapViewChange = function (event) {
+                    // zoomend generates a moveend event anyway
+                    corners = getCurrentMapViewBox();
+                    if (event.type == 'moveend') {
+                        console.log('view: ' + corners.topleft + ' and ' + corners.botrite);
+                    }
+                };
+
+                eventListeners = {
+                    // moveend: onMapViewChange,
+                    // zoomend: onMapViewChange
+                };
+
+                theMap = new OpenLayers.Map({
+                    div: "map",
+                    eventListeners: eventListeners,
+                    layers: [vmapi],
+                    numZoomLevels: 21,
+                    autoUpdateSize: false
+                });
+
+                theMap.addControl(new OpenLayers.Control.ScaleLine({
+                    geodesic: true
+                }));
+
+                var getLongLatBox = function (topleft, botrite) {
+                    var bound_box_long_lat = [
+                        { 'latitude': topleft.lat,
+                          'longitude': topleft.lon },
+                        { 'latitude': botrite.lat,
+                          'longitude': botrite.lon }
+                    ]
+                    return bound_box_long_lat
+                };
+
+                $("#btn_gotoPollution").click(function() {
+                    var vb = getCurrentMapViewBox();
+                    var bound_box_long_lat = getLongLatBox(vb.topleft, vb.botrite);
+                    duration = 4     // Total duration of the animation in seconds.
+                    startPollutionAnimation(bound_box_long_lat, duration)
+                });
+
+                theMap.zoomToExtent([15892174, -4339788, 16367307, -4715246], true);
+            // });
+
+            window.onresize = function() {
+                setTimeout(function() {
+                    theMap.updateSize();
+                }, 200);
+            };
+
+            function matrixIds(name, l) {
+                var matrixids = new Array(l);
+                for (var i = 0; i <= l - 1; ++i) {
+                    matrixids[i] = name + ":" + i;
+                }
+                return matrixids;
+            }
+        </script>
+        <script src="./js/delwp_theme.js"></script>
+
+        <link href="./css/particles.css" rel="stylesheet">
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="./volume_vis/data_gov_request.js"></script>
+        <script src="./volume_vis/particles.js"></script>
+        <script src="./volume_vis/animate_points.js"></script>
+        <script src="./volume_vis/pollution_points.js"></script>
+
+    </body>
+</html>
