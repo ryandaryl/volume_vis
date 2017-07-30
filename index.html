@@ -19,14 +19,26 @@
                 background-size: 20px 20px !important;
                 opacity: 0.7 !important;
             }
+            #instructions {
+                pointer-events: none;
+                width: 30%;
+                right: 0%;
+                padding-left: 3%;
+                height: auto;
+                position: absolute;
+                z-index: 1;
+                background: rgba(0, 0, 0, 0.5);
+            }
         </style>
     </head>
     <body>
         <div id="container" style="position: absolute; width:100%; height:100%; pointer-events: none;">
-          <div style="position: absolute; z-index: 0; pointer-events: auto;" id="map"></div>
-          <div style="position: absolute; z-index:2; pointer-events: auto; width:500px; top:0px;">
-            <button id="btn_gotoPollution">POLLUTION EXPLOSION!</button>
+          <div id="instructions">
+                <h1>Victoria pollution viewer</h1>Pan and zoom the map to the level you want, then press the button:     
+                <button style="z-index:2; pointer-events: auto;" id="btn_gotoPollution">POLLUTION EXPLOSION!</button><br><br>
           </div>
+          <div style="position: absolute; z-index: 0; pointer-events: auto;" id="map"></div>
+          <!-<div style="position: absolute; z-index: 1; pointer-events: none; width: 20%; height: 60%; bottom: 0%; right: 0%; background: rgba(0, 0, 0, 0.5);">->
         </div>
         <script>
             var theMap; // Used in the delwp theme to send functions to the map
